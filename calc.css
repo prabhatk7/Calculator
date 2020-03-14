@@ -1,0 +1,79 @@
+body{
+    font:'Open Sans',sans-serif;
+    background-color: black;
+}
+#container{
+    width: 1300px;
+    height: 550px;
+    background-image: url('https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=defocused-image-of-lights-255379.jpg&fm=jpg') ;
+    background-size: cover;
+    margin: 35px auto;
+}
+#calculator{
+    height: 500px;
+    width: 285px;
+    background-color: white;
+    margin: 0px auto;
+    top: 15px;
+    position: relative;
+    border-radius: 3%;
+}
+#result{
+    text-align: right;
+    height: 130px;
+    padding: 5px;
+    width: 235px;
+    
+    border:solid 20px ;
+
+    border-color: rgb(155, 152, 152);
+    border-top-left-radius: 3%;
+    border-top-right-radius: 3%;
+}
+#history-value{
+    
+    height: 35px;
+    font-size: 20px;
+}
+#output-value{
+    
+    height: 35px;
+    font-size: 25px;
+}
+#keyboard{
+    height: 390px;
+    padding-left: 15px;
+    padding-top: 25px;
+  
+}
+.operator{
+    height: 30px;
+    background-color: rgb(12, 12, 12);
+    font-size: 0.4cm;
+    font-weight: bold;
+}
+.number{
+    height: 40px;
+    background-color: slategrey;
+    font-size: 0.5cm;
+}
+.empty{
+    border-width: 0ch;
+    background-color: white;
+    outline-color: transparent;
+}
+.number,.operator,.empty{
+    border-radius: 50%;
+    
+    width: 40px;
+    margin: 10px;
+    padding: 2px;
+    border-width: 0ch;
+    cursor: pointer;
+    outline-color: transparent;
+    color: rgba(252, 252, 252, 0.952);
+}
+.operator:active, .number:active{
+    font-size: 12px;
+}
+    
