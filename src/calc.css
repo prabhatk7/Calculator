@@ -5,7 +5,7 @@ body{
 #container{
     width: 1300px;
     height: 550px;
-    background-image: url('https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=defocused-image-of-lights-255379.jpg&fm=jpg') ;
+    /* background-image: url('https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=defocused-image-of-lights-255379.jpg&fm=jpg') ; */
     background-size: cover;
     margin: 35px auto;
 }

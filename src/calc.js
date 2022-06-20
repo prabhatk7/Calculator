@@ -4,15 +4,13 @@ function getHistory() {
 
 function printHistory(num) {
         document.getElementById("history-value").innerText = num;
-    
 }
 
 function getOutput() {
     return document.getElementById("output-value").innerText;
 }
 
-function printOutput(num,f) {
-    console.log(f);
+function printOutput(num) {
     if (num=='') {
         document.getElementById("output-value").innerText = num;
     }
@@ -34,52 +32,78 @@ function unformate(num) {
 
 var evaluated=false;
 var operator = document.getElementsByClassName("operator");
+
+function clearScreen(){
+    printHistory('');
+    printOutput('');
+    evaluated = false;
+}
+
+function backspace(){
+    if(!evaluated){
+        var newOutput = unformate(getOutput());
+        newOutput = newOutput.toString();
+        if (newOutput) {
+            newOutput = newOutput.substring(0, newOutput.length - 1);
+            printOutput(newOutput);
+        }
+    }
+}
+
+function numPressed(num){
+    let output = unformate(getOutput());
+    if (output != NaN && !evaluated) {
+        output += num;
+        printOutput(output);
+    }
+}
+
+function evaluate(){
+    if (getOutput() != '' && !evaluated) {
+        let history = getHistory();
+        history += unformate(getOutput());
+        
+        let result = eval(history);
+        printOutput(result);
+        history += '=';
+        printHistory(history);
+        evaluated = true;
+    }
+}
+
+function operation(op){
+    if (getOutput() != '') {
+        let output = getOutput();
+        let history = getHistory();
+        output = unformate(output);
+        history += output;
+        if (!evaluated) {
+            history += op;
+            printHistory(history);
+            printOutput(''); 
+        }
+        else{
+            printHistory(output+op);
+            printOutput('');
+            evaluated=false;
+        }
+    }
+}
+
 for (let i = 0; i < operator.length; i++) {
     operator[i].addEventListener('click', function () {
         if (this.id == 'clear') {
-            printHistory('');
-            printOutput('',1);
-            evaluated=false;
+            clearScreen()
         }
-        else if (this.id == 'backspace' && evaluated==false) {
-
-            var newOutput = unformate(getOutput());
-            newOutput = newOutput.toString();
-
-            if (newOutput) {
-                newOutput = newOutput.substring(0, newOutput.length - 1);
-                printOutput(newOutput,2);
-            }
+        else if (this.id == 'backspace') {
+            backspace();
         }
-        else {
-            if (getOutput() != '') {
-                let output = getOutput();
-                let history = getHistory();
-                output = unformate(output);
-                history += output;
-                if (!evaluated) {
-                    if (this.id == '=') {
-                        let result = eval(history);
-                        history += '=';
-                        printOutput(result,9);
-                        printHistory(history);
-                        evaluated = true;
-                    }
-                    else  {
-                        history += this.id;
-                        printHistory(history);
-                        printOutput('',3);
-                    }
-                }
-                else if(this.id!='=' && evaluated && this.id !='backspace'){
-                    printHistory(output+this.id);
-                    printOutput('',4);
-                    evaluated=false;
-                }
-            }
+        else if(this.id == '='){
+            evaluate();
         }
-
-
+        else{
+            operation(this.id);
+        }
     });
     operator[i].addEventListener('keydown', function(e) {
         e.preventDefault();
@@ -90,74 +114,34 @@ for (let i = 0; i < operator.length; i++) {
 var number = document.getElementsByClassName("number");
 for (let i = 0; i < number.length; i++) {
     number[i].addEventListener('click', function (e) {
-        let output = unformate(getOutput());
-        if (output != NaN && !evaluated) {
-            output += this.id;
-            printOutput(output,5);
-        }
+        numPressed(this.id);
     });
     number[i].addEventListener('keydown',function(e) {
         e.preventDefault();
     });
 }
+
 window.addEventListener('keydown', function (e) {
     let output = unformate(getOutput());
-    console.log(e.keyCode);
     if (output != NaN) {
-        if ((e.keyCode - 95) > 0 && (e.keyCode - 97) < 9 && !evaluated) {
-            output += (e.keyCode - 96).toString();
-            printOutput(output);
-            
+        if ((e.keyCode - 95) > 0 && (e.keyCode - 97) < 9) {
+            let num = (e.keyCode - 96).toString();
+            numPressed(num);
         }
         if(e.keyCode==107 || e.keyCode==109 || e.keyCode==106 || e.keyCode==111){
-            let history=getHistory();
-            if(!evaluated){
-                history+=output;
-                history+=String.fromCharCode(e.keyCode-64);
-                printHistory(history);
-                printOutput('');
-            }
-            else{
-                history = output + String.fromCharCode(e.keyCode-64);
-                printHistory(history);
-                printOutput('');
-                evaluated = false;
-            }
-            
+            let op = String.fromCharCode(e.keyCode-64);
+            operation(op);
         }
-        if(e.keyCode==13){
-            console.log(e.keyCode);
-            if (getOutput() != '') {
-                
-                let history = getHistory();
-                
-                history += output;
-                if (!evaluated) {
-                    let result = eval(history);
-                    printOutput(result);
-                    history += '=';
-                    printHistory(history);
-                    evaluated = true;
-                }
-            }
+        if(e.keyCode==13 || e.keyCode == 187){
+            evaluate();
         }
         if(e.keyCode == 8){
-            var newOutput = unformate(getOutput());
-            newOutput = newOutput.toString();
-
-            if (newOutput) {
-                newOutput = newOutput.substring(0, newOutput.length - 1);
-                printOutput(newOutput,2);
-            }
+            backspace();
         }
         if(e.keyCode == 46){
-            printHistory('');
-            printOutput('');
-            evaluated = false;
+            clearScreen();
         }
     }
-    
-
 }
 );
 
